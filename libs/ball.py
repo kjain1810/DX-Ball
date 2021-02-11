@@ -36,5 +36,23 @@ class Ball(Block):
         if self.y >= BOARD_WIDTH:
             self.y = BOARD_WIDTH - 1
             self.velocity["y"] = -self.velocity["y"]
-        # debugger.debug(self.velocity)
         return True
+
+    def can_collide(self, obj):
+        """Tell if ball is about to collide with object"""
+        if abs(obj.x - self.x) > 1:
+            return False
+        if abs(obj.y - self.y) > 1:
+            return False
+        if abs(obj.x - self.x) == 1 and abs(obj.y - self.y) == 1:
+            if self.x + self.velocity["x"] != obj.x or self.y + self.velocity["y"] != obj.y:
+                return False
+            return True
+        if abs(obj.x - self.x) == 1:
+            if self.x + self.velocity["x"] == obj.x:
+                return True
+            return False
+        if abs(obj.y - self.y) == 1:
+            if self.y + self.velocity["y"] == obj.y:
+                return True
+            return False

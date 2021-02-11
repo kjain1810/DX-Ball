@@ -7,6 +7,7 @@ from .output import clearscreen, outputboard, endgame, newlife
 from .player import Player
 from .utils import create_level
 from .ball import Ball
+from .debugger import debugger
 
 
 class Game():
@@ -53,9 +54,25 @@ class Game():
             elif x == 'q':
                 print("Bye!")
                 break
+            obj_torem = []
             for ball in self.balls:
-                self.board_objects = [
-                    obj for obj in self.board_objects if obj.collide(ball)]
+                can_collide = []
+                for obj in self.board_objects:
+                    if ball.can_collide(obj):
+                        can_collide.append(obj)
+                if len(can_collide) == 0:
+                    continue
+                does_collide = can_collide[0]
+                if len(can_collide) == 2:
+                    if can_collide[1].dist(ball) < does_collide.dist(ball):
+                        does_collide = can_collide[1]
+                if does_collide.collide(ball) == True:
+                    obj_torem.append(does_collide)
+            tmp = []
+            for obj in self.board_objects:
+                if obj not in obj_torem:
+                    tmp.append(obj)
+            self.board_objects = tmp
             self.balls = [ball for ball in self.balls if ball.move(
                 self.player.paddleLeft, self.player.paddleLength)]
             clearscreen()

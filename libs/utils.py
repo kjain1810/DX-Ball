@@ -11,5 +11,5 @@ def create_level():
         for j in range(BOARD_WIDTH):
             ret.append(Bricks(y, j, level))
     for i in range(5, BOARD_WIDTH - 5):
-        ret.append(Bricks(3, i, 10000, True))
+        ret.append(Bricks(3, i, 10000, False))
     return ret
