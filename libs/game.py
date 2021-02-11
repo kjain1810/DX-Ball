@@ -10,6 +10,8 @@ from .ball import Ball
 
 
 class Game():
+    """The main game class"""
+
     def __init__(self):
         self.getter = Get()
         self.player = Player()
@@ -20,6 +22,7 @@ class Game():
         self.looper()
 
     def construct_game_board(self):
+        """Constructs the board accotding to the objects"""
         ret = []
         for i in range(BOARD_HEIGHT):
             line = []
@@ -35,6 +38,7 @@ class Game():
         return ret
 
     def looper(self):
+        """The main loop function"""
         while True:
             x = input_to(self.getter)
             if x == 'a':
@@ -62,10 +66,12 @@ class Game():
                 self.player.reduceLife()
                 if self.player.lives == 0:
                     endgame(self.player.score)
+                    return
                 else:
                     newlife(self.player.lives)
                     self.startNewLife()
 
     def startNewLife(self):
+        """Starts a new life for the player"""
         self.balls = [Ball(
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]

@@ -6,14 +6,18 @@ from .debugger import debugger
 
 
 class Ball(Block):
+    """Class that defines the balls"""
+
     def __init__(self, x, y, velx, vely):
         Block.__init__(self, x, y, velx, vely, Back.WHITE + Fore.BLACK + "OOO")
 
     def release(self, paddleLeft, paddleLength):
+        """Releases a ball that is resting on the paddle"""
         self.velocity["x"] = -1
         self.velocity["y"] = self.y - int(paddleLeft + paddleLength / 2)
 
     def move(self, paddleLeft, paddleLength):
+        """Moves the balls according to their velocities"""
         self.x += self.velocity["x"]
         self.y += self.velocity["y"]
         if self.x < 0:

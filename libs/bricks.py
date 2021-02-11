@@ -5,6 +5,8 @@ from .settings import *
 
 
 class Bricks(Block):
+    """Class that defines each of the bricks"""
+
     def __init__(self, x, y, level, breakable=False):
         if level == 1:
             self.color = Back.YELLOW

@@ -3,6 +3,8 @@ from .debugger import debugger
 
 
 class Block():
+    """The main block class which represents all objects not in user control"""
+
     def __init__(self, x, y, velx, vely, otp):
         self.x = x
         self.y = y
@@ -13,6 +15,7 @@ class Block():
         self.otp = otp
 
     def move(self):
+        """Moves the object"""
         self.x += self.velocity["x"]
         self.y += self.velocity["y"]
         if self.x < 0:

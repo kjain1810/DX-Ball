@@ -2,6 +2,8 @@ from .settings import *
 
 
 class Player():
+    """The main player class"""
+
     def __init__(self):
         self.paddleLength = 5
         self.paddleLeft = int(BOARD_WIDTH / 2 - 5)
@@ -12,6 +14,7 @@ class Player():
         self.speed = 1
 
     def movePaddleLeft(self, balls):
+        """Moving the paddle to the left if it can"""
         if(self.paddleLeft == 0):
             return
         self.paddleLeft -= 1
@@ -20,6 +23,7 @@ class Player():
                 ball.y -= 1
 
     def movePaddleRight(self, balls):
+        """Moving the paddle to the right if it can"""
         if(self.paddleLeft + self.paddleLength == BOARD_WIDTH):
             return
         self.paddleLeft += 1
@@ -28,4 +32,5 @@ class Player():
                 ball.y += 1
 
     def reduceLife(self):
+        """When the player loses all the balls"""
         self.lives -= 1

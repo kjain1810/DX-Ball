@@ -3,6 +3,7 @@ from .bricks import Bricks
 
 
 def create_level():
+    """Creates the initial level"""
     ret = []
     for i in range(3):
         level = 3 - i

@@ -1,4 +1,6 @@
 class Debugger():
+    """A class to debug during development"""
+
     def __init__(self):
         self.debuglist = []
 

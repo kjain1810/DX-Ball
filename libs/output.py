@@ -6,10 +6,12 @@ from .debugger import debugger
 
 
 def clearscreen():
+    """Clears the screen"""
     sp.call('clear', shell=True)
 
 
 def outputboard(board, player):
+    """Outputs the board"""
     for row in board:
         for cell in row:
             print(cell, end="")
@@ -22,14 +24,15 @@ def outputboard(board, player):
 
 
 def endgame(score):
+    """Output when game ends"""
     clearscreen()
     print("GAME OVER!!!")
     print("SCORE: ", score)
     sleep(5)
-    exit()
 
 
 def newlife(lives):
+    """Output when life is lost"""
     clearscreen()
     print("LIFE OVER!!!")
     print("LIFES REMAINING: ", lives)
