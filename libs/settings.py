@@ -1,0 +1,2 @@
+BOARD_HEIGHT = int(20)
+BOARD_WIDTH = int(40)
