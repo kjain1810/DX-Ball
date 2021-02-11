@@ -12,5 +12,6 @@ class Debugger():
 
     def clearDebugs(self):
         self.debuglist = []
-    
+
+
 debugger = Debugger()

@@ -3,10 +3,11 @@ from time import sleep
 
 from .input import Get, input_to
 from .settings import *
-from .output import clearscreen, outputboard
+from .output import clearscreen, outputboard, endgame, newlife
 from .player import Player
 from .utils import create_level
 from .ball import Ball
+
 
 class Game():
     def __init__(self):
@@ -32,6 +33,7 @@ class Game():
         for ball in self.balls:
             ret[ball.x][ball.y] = ball.otp
         return ret
+
     def looper(self):
         while True:
             x = input_to(self.getter)
@@ -42,12 +44,28 @@ class Game():
             elif x == 'w':
                 for ball in self.balls:
                     if ball.velocity["x"] == 0:
-                        ball.release(self.player.paddleLeft, self.player.paddleLength)
+                        ball.release(self.player.paddleLeft,
+                                     self.player.paddleLength)
             elif x == 'q':
                 print("Bye!")
                 break
-            self.balls = [ball for ball in self.balls if ball.move(self.player.paddleLeft, self.player.paddleLength)] 
+            for ball in self.balls:
+                self.board_objects = [
+                    obj for obj in self.board_objects if obj.collide(ball)]
+            self.balls = [ball for ball in self.balls if ball.move(
+                self.player.paddleLeft, self.player.paddleLength)]
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)
-            sleep(0.01)
+            sleep(0.01/self.player.speed)
+            if len(self.balls) == 0:
+                self.player.reduceLife()
+                if self.player.lives == 0:
+                    endgame(self.player.score)
+                else:
+                    newlife(self.player.lives)
+                    self.startNewLife()
+
+    def startNewLife(self):
+        self.balls = [Ball(
+            BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]

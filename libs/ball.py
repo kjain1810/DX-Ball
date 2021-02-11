@@ -4,10 +4,11 @@ from .block import Block
 from .settings import *
 from .debugger import debugger
 
+
 class Ball(Block):
     def __init__(self, x, y, velx, vely):
-        Block.__init__(self, x, y, velx, vely, Back.WHITE + Fore.BLACK + "OOO" )
-    
+        Block.__init__(self, x, y, velx, vely, Back.WHITE + Fore.BLACK + "OOO")
+
     def release(self, paddleLeft, paddleLength):
         self.velocity["x"] = -1
         self.velocity["y"] = self.y - int(paddleLeft + paddleLength / 2)
@@ -31,5 +32,5 @@ class Ball(Block):
         if self.y >= BOARD_WIDTH:
             self.y = BOARD_WIDTH - 1
             self.velocity["y"] = -self.velocity["y"]
-        debugger.debug(self.velocity)
+        # debugger.debug(self.velocity)
         return True

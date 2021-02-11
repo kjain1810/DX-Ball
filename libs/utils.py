@@ -1,6 +1,7 @@
 from .settings import *
 from .bricks import Bricks
 
+
 def create_level():
     ret = []
     for i in range(3):

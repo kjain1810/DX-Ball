@@ -4,6 +4,7 @@ import termios
 import tty
 import signal
 
+
 class Get:
     """Class to get input."""
 

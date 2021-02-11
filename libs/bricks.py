@@ -3,6 +3,7 @@ from colorama import Back, Style
 from .block import Block
 from .settings import *
 
+
 class Bricks(Block):
     def __init__(self, x, y, level, breakable=False):
         if level == 1:
@@ -13,6 +14,10 @@ class Bricks(Block):
             self.color = Back.RED
         elif breakable == True:
             self.color = Back.CYAN
-        Block.__init__(self, x, y, 0, 0, Style.DIM + self.color + " " * BLOCK_WIDTH + Style.RESET_ALL)
+        Block.__init__(self, x, y, 0, 0, Style.DIM +
+                       self.color + " " * BLOCK_WIDTH + Style.RESET_ALL)
         self.level = level
         self.breakable = breakable
+
+    def collide(self, ball):
+        return True
