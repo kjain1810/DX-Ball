@@ -18,7 +18,7 @@ class Game():
     def __init__(self):
         self.getter = Get()
         self.player = Player()
-        self.board_objects = create_test_level_0()
+        self.board_objects = create_level()
         self.balls = [Ball(
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
         self.game_board = self.construct_game_board()

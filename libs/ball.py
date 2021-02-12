@@ -51,14 +51,14 @@ class Ball(Block):
         if abs(obj.y - self.y) > 1:
             return False
         if abs(obj.x - self.x) == 1 and abs(obj.y - self.y) == 1:
-            if self.x + (self.velocity["x"]/abs(self.velocity["x"])) != obj.x or self.y + (self.velocity["y"]/abs(self.velocity["y"])) != obj.y:
+            if self.x + (self.velocity["x"]/abs(self.velocity["x"]) if self.velocity["x"] != 0 else 0) != obj.x or self.y + (self.velocity["y"]/abs(self.velocity["y"]) if self.velocity["y"] != 0 else 0) != obj.y:
                 return False
             return True
         if abs(obj.x - self.x) == 1:
-            if self.x + (self.velocity["x"]/abs(self.velocity["x"])) == obj.x:
+            if self.x + (self.velocity["x"]/abs(self.velocity["x"]) if self.velocity["x"] != 0 else 0) == obj.x:
                 return True
             return False
         if abs(obj.y - self.y) == 1:
-            if self.y + (self.velocity["y"]/abs(self.velocity["y"])) == obj.y:
+            if self.y + (self.velocity["y"]/abs(self.velocity["y"]) if self.velocity["y"] != 0 else 0) == obj.y:
                 return True
             return False
