@@ -9,6 +9,8 @@ from .utils import create_level
 from .ball import Ball
 from .debugger import debugger
 
+from .utils import create_test_level_0
+
 
 class Game():
     """The main game class"""
@@ -16,7 +18,7 @@ class Game():
     def __init__(self):
         self.getter = Get()
         self.player = Player()
-        self.board_objects = create_level()
+        self.board_objects = create_test_level_0()
         self.balls = [Ball(
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
         self.game_board = self.construct_game_board()
@@ -66,15 +68,22 @@ class Game():
                 if len(can_collide) == 2:
                     if can_collide[1].dist(ball) < does_collide.dist(ball):
                         does_collide = can_collide[1]
+                if len(can_collide) == 3:
+                    if can_collide[1].dist(ball) == 2:
+                        does_collide = can_collide[1]
+                    elif can_collide[2].dist(ball) == 2:
+                        does_collide = can_collide[2]
                 if does_collide.collide(ball) == True:
                     obj_torem.append(does_collide)
+                    self.player.increaseScore()
             tmp = []
             for obj in self.board_objects:
                 if obj not in obj_torem:
                     tmp.append(obj)
             self.board_objects = tmp
             self.balls = [ball for ball in self.balls if ball.move(
-                self.player.paddleLeft, self.player.paddleLength)]
+                self.player.paddleLeft, self.player.paddleLength, self.board_objects)]
+            self.player.setTime()
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)

@@ -2,6 +2,7 @@ from colorama import Back, Style
 
 from .block import Block
 from .settings import *
+from .debugger import debugger
 
 levelColors = [None, Back.YELLOW, Back.BLUE, Back.RED]
 totalLevels = 3
@@ -20,7 +21,7 @@ class Bricks(Block):
         self.breakable = breakable
 
     def collide(self, ball):
-        """Tell if ball collides with bricks or not"""
+        """Do the collision"""
         if abs(ball.x - self.x) == 1 and abs(ball.y - self.y) == 1:
             ball.velocity["x"] *= -1
             ball.velocity["y"] *= -1

@@ -1,4 +1,5 @@
 from .settings import *
+from time import time
 
 
 class Player():
@@ -12,6 +13,7 @@ class Player():
         self.score = 0
         self.time = 0
         self.speed = 1
+        self.start_time = time()
 
     def movePaddleLeft(self, balls):
         """Moving the paddle to the left if it can"""
@@ -34,3 +36,11 @@ class Player():
     def reduceLife(self):
         """When the player loses all the balls"""
         self.lives -= 1
+
+    def setTime(self):
+        """Set the playing time of the player"""
+        self.time = int(time() - self.start_time)
+
+    def increaseScore(self):
+        """Update the score of the player"""
+        self.score += 1

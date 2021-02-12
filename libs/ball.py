@@ -16,10 +16,16 @@ class Ball(Block):
         self.velocity["x"] = -1
         self.velocity["y"] = self.y - int(paddleLeft + paddleLength / 2)
 
-    def move(self, paddleLeft, paddleLength):
+    def move(self, paddleLeft, paddleLength, objects):
         """Moves the balls according to their velocities"""
         self.x += self.velocity["x"]
+        oldy = self.y
         self.y += self.velocity["y"]
+        for obj in objects:
+            if obj.x == self.x and obj.y > oldy and obj.y <= self.y and self.velocity["y"] > 0:
+                self.y = obj.y - 1
+            elif obj.x == self.x and obj.y < oldy and obj.y >= self.y and self.velocity["y"] < 0:
+                self.y = obj.y + 1
         if self.x < 0:
             self.x = 0
             self.velocity["x"] = -self.velocity["x"]
@@ -45,14 +51,14 @@ class Ball(Block):
         if abs(obj.y - self.y) > 1:
             return False
         if abs(obj.x - self.x) == 1 and abs(obj.y - self.y) == 1:
-            if self.x + self.velocity["x"] != obj.x or self.y + self.velocity["y"] != obj.y:
+            if self.x + (self.velocity["x"]/abs(self.velocity["x"])) != obj.x or self.y + (self.velocity["y"]/abs(self.velocity["y"])) != obj.y:
                 return False
             return True
         if abs(obj.x - self.x) == 1:
-            if self.x + self.velocity["x"] == obj.x:
+            if self.x + (self.velocity["x"]/abs(self.velocity["x"])) == obj.x:
                 return True
             return False
         if abs(obj.y - self.y) == 1:
-            if self.y + self.velocity["y"] == obj.y:
+            if self.y + (self.velocity["y"]/abs(self.velocity["y"])) == obj.y:
                 return True
             return False

@@ -3,6 +3,7 @@ from time import sleep
 from colorama import Style
 
 from .debugger import debugger
+from .settings import SLEEPTIME
 
 
 def clearscreen():
@@ -28,7 +29,7 @@ def endgame(score):
     clearscreen()
     print("GAME OVER!!!")
     print("SCORE: ", score)
-    sleep(5)
+    sleep(SLEEPTIME)
 
 
 def newlife(lives):
@@ -36,5 +37,5 @@ def newlife(lives):
     clearscreen()
     print("LIFE OVER!!!")
     print("LIFES REMAINING: ", lives)
-    sleep(5)
+    sleep(SLEEPTIME)
     clearscreen()
