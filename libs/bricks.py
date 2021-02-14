@@ -19,6 +19,7 @@ class Bricks(Block):
                        levelColors[level] + " " * BLOCK_WIDTH + Style.RESET_ALL)
         self.level = level
         self.breakable = breakable
+        self.points = level
 
     def collide(self, ball):
         """Do the collision"""

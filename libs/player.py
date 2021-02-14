@@ -42,6 +42,6 @@ class Player():
         """Set the playing time of the player"""
         self.time = int(time() - self.start_time)
 
-    def increaseScore(self):
+    def increaseScore(self, points):
         """Update the score of the player"""
-        self.score += 1
+        self.score += points

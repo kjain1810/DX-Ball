@@ -73,7 +73,7 @@ class Game():
                         newPowerUp = get_powerup(obj.x, obj.y)
                         if newPowerUp != None:
                             self.powerups.append(newPowerUp)
-                        self.player.increaseScore()
+                        self.player.increaseScore(obj.points)
                     continue
                 does_collide = can_collide[0]
                 if len(can_collide) == 2:
@@ -86,11 +86,11 @@ class Game():
                         does_collide = can_collide[2]
                 if does_collide.collide(ball) == True:
                     obj_torem.append(does_collide)
-                    self.player.increaseScore()
+                    self.player.increaseScore(does_collide.points)
                     newPowerUp = get_powerup(does_collide.x, does_collide.y)
                     if newPowerUp != None:
                         self.powerups.append(newPowerUp)
-            debugger.debug(self.powerups)
+            # debugger.debug(self.powerups)
             tmp = []
             for obj in self.board_objects:
                 if obj not in obj_torem:
