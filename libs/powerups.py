@@ -31,9 +31,14 @@ class ExpandPaddle(PowerUps):
                           Back.GREEN + " E " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
-        player.paddleLength *= 2
+        player.paddleLength += 2
+        player.paddleLeft -= 1
         if player.paddleLength > MAX_PADDLE_LENGTH:
             player.paddleLength = MAX_PADDLE_LENGTH
+        if player.paddleLeft < 0:
+            player.paddleLeft = 0
+        if player.paddleLeft + player.paddleLength - 1 > BOARD_WIDTH:
+            player.paddleLeft = BOARD_WIDTH - player.paddleLength
 
 
 class ShrinkPaddle(PowerUps):
@@ -44,9 +49,11 @@ class ShrinkPaddle(PowerUps):
                           Back.RED + " S " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
-        player.paddleLength = player.paddleLength // 2
+        player.paddleLength = player.paddleLength - 2
         if player.paddleLength < MIN_PADDLE_LENGTH:
             player.paddleLength = MIN_PADDLE_LENGTH
+        else:
+            player.paddleLeft += 1
 
 
 class BallMultiplier(PowerUps):
@@ -72,9 +79,10 @@ class FastBall(PowerUps):
 
     def doPowerUp(self, player, balls):
         for ball in balls:
-            ball.velocity["y"] += 1
-            if ball.velocity["y"] > MAX_BALL_VELOCITY:
-                ball.velocity["y"] = MAX_BALL_VELOCITY
+            if ball.velocity["y"] == 0 or abs(ball.velocity["y"]) == MAX_BALL_VELOCITY:
+                continue
+            ball.velocity["y"] = int(abs(
+                ball.velocity["y"] + 1) * (ball.velocity["y"]//abs(ball.velocity["y"])))
 
 
 class ThruBall(PowerUps):

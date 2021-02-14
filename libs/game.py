@@ -25,6 +25,14 @@ class Game():
         self.game_board = self.construct_game_board()
         self.looper()
 
+    def assing_obj(self, board, obj):
+        if obj.x < 0 or obj.y < 0:
+            return False
+        if obj.x > BOARD_HEIGHT or obj.y > BOARD_WIDTH:
+            return False
+        board[obj.x][obj.y] = obj.otp
+        return True
+
     def construct_game_board(self):
         """Constructs the board accotding to the objects"""
         ret = []
@@ -35,12 +43,18 @@ class Game():
             ret.append(line)
         for i in range(self.player.paddleLeft, self.player.paddleLeft + self.player.paddleLength):
             ret[BOARD_HEIGHT - 1][i] = PADDLE_OUTPUT
-        for obj in self.board_objects:
-            ret[obj.x][obj.y] = obj.otp
-        for ball in self.balls:
-            ret[ball.x][ball.y] = ball.otp
-        for powerup in self.powerups:
-            ret[powerup.x][powerup.y] = powerup.otp
+        # for obj in self.board_objects:
+        #     ret[obj.x][obj.y] = obj.otp
+        self.board_objects = [
+            obj for obj in self.board_objects if self.assing_obj(ret, obj)]
+        # for ball in self.balls:
+        #     ret[ball.x][ball.y] = ball.otp
+        self.balls = [
+            ball for ball in self.balls if self.assing_obj(ret, ball)]
+        # for powerup in self.powerups:
+        #     ret[powerup.x][powerup.y] = powerup.otp
+        self.powerups = [
+            powerup for powerup in self.powerups if self.assing_obj(ret, powerup)]
         return ret
 
     def looper(self):
@@ -91,20 +105,19 @@ class Game():
                     if newPowerUp != None:
                         self.powerups.append(newPowerUp)
             # debugger.debug(self.powerups)
-            tmp = []
-            for obj in self.board_objects:
-                if obj not in obj_torem:
-                    tmp.append(obj)
-            self.board_objects = tmp
-            self.balls = [ball for ball in self.balls if ball.move(
-                self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle)]
+            self.board_objects = [
+                obj for obj in self.board_objects if obj not in obj_torem]
+            ballstoremove = [ball for ball in self.balls if ball.move(
+                self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle) == False]
             self.powerups = [
                 powerup for powerup in self.powerups if powerup.move(self.player, self.balls)]
             self.player.setTime()
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)
-            sleep(0.01/self.player.speed)
+            sleep(0.01)
+            self.balls = [
+                ball for ball in self.balls if ball not in ballstoremove]
             if len(self.balls) == 0:
                 sleep(1)
                 self.player.reduceLife()
@@ -112,7 +125,7 @@ class Game():
                     endgame(self.player.score)
                     return
                 else:
-                    newlife(self.player.lives)
+                    newlife(self.player)
                     self.startNewLife()
 
     def startNewLife(self):
