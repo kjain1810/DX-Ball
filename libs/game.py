@@ -26,6 +26,7 @@ class Game():
         self.looper()
 
     def assing_obj(self, board, obj):
+        """Assing a position on the board if possible"""
         if obj.x < 0 or obj.y < 0:
             return False
         if obj.x > BOARD_HEIGHT or obj.y > BOARD_WIDTH:
@@ -43,16 +44,10 @@ class Game():
             ret.append(line)
         for i in range(self.player.paddleLeft, self.player.paddleLeft + self.player.paddleLength):
             ret[BOARD_HEIGHT - 1][i] = PADDLE_OUTPUT
-        # for obj in self.board_objects:
-        #     ret[obj.x][obj.y] = obj.otp
         self.board_objects = [
             obj for obj in self.board_objects if self.assing_obj(ret, obj)]
-        # for ball in self.balls:
-        #     ret[ball.x][ball.y] = ball.otp
         self.balls = [
             ball for ball in self.balls if self.assing_obj(ret, ball)]
-        # for powerup in self.powerups:
-        #     ret[powerup.x][powerup.y] = powerup.otp
         self.powerups = [
             powerup for powerup in self.powerups if self.assing_obj(ret, powerup)]
         return ret
@@ -104,7 +99,6 @@ class Game():
                     newPowerUp = get_powerup(does_collide.x, does_collide.y)
                     if newPowerUp != None:
                         self.powerups.append(newPowerUp)
-            # debugger.debug(self.powerups)
             self.board_objects = [
                 obj for obj in self.board_objects if obj not in obj_torem]
             ballstoremove = [ball for ball in self.balls if ball.move(

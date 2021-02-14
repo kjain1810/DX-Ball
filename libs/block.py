@@ -29,5 +29,4 @@ class Block():
         if self.y >= BOARD_WIDTH:
             self.y = BOARD_WIDTH - 1
             self.velocity["y"] = -self.velocity["y"]
-        # debugger.debug(self.velocity)
         return True

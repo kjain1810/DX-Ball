@@ -12,9 +12,11 @@ class PowerUps(Block):
         Block.__init__(self, x, y, 1, 0, otp)
 
     def doPowerUp(self, player, balls):
+        """Super function for all powerups"""
         pass
 
     def move(self, player, balls):
+        """Moves the powerup a block down"""
         self.x += self.velocity["x"]
         if self.x == BOARD_HEIGHT - 1:
             if self.y >= player.paddleLeft and self.y < player.paddleLeft + player.paddleLength:
@@ -31,6 +33,7 @@ class ExpandPaddle(PowerUps):
                           Back.GREEN + " E " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
+        """Expansd the paddle of the player"""
         player.paddleLength += 2
         player.paddleLeft -= 1
         if player.paddleLength > MAX_PADDLE_LENGTH:
@@ -49,6 +52,7 @@ class ShrinkPaddle(PowerUps):
                           Back.RED + " S " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
+        """Shrinks the paddle of the player"""
         player.paddleLength = player.paddleLength - 2
         if player.paddleLength < MIN_PADDLE_LENGTH:
             player.paddleLength = MIN_PADDLE_LENGTH
@@ -62,6 +66,7 @@ class BallMultiplier(PowerUps):
                           Back.GREEN + " B " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
+        """Creates a copy of each ball with diagonal velocity"""
         newBalls = []
         for ball in balls:
             newBalls.append(
@@ -78,6 +83,7 @@ class FastBall(PowerUps):
                           Back.RED + " F " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
+        """Increases speed of each ball"""
         for ball in balls:
             if ball.velocity["y"] == 0 or abs(ball.velocity["y"]) == MAX_BALL_VELOCITY:
                 continue
@@ -93,6 +99,7 @@ class ThruBall(PowerUps):
                           Back.GREEN + " T " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
+        """Makes the ball a thru ball"""
         for ball in balls:
             ball.thru_ball = True
 
@@ -105,4 +112,5 @@ class PaddleGrab(PowerUps):
                           Back.GREEN + " G " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
+        """Makes the paddle grab stuff"""
         player.grabPaddle = True

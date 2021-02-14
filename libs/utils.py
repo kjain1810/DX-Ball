@@ -19,6 +19,7 @@ def create_level():
 
 
 def create_test_level_0():
+    """A test level"""
     ret = []
     for i in range(7):
         ret.append(Bricks(i, 25, 10000, False))
@@ -26,6 +27,7 @@ def create_test_level_0():
 
 
 def get_powerup(x, y):
+    """Determines if brick should release powerup or not"""
     num = random()
     summation = 0
     summation += PROB_BALL_FAST

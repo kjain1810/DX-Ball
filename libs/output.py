@@ -65,7 +65,6 @@ def outputboard(board, player):
     # Game instructions
     print("")
     print(tabulated)
-    # debugger.printDebugs()
 
 
 def endgame(score):
