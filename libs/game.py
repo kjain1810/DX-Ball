@@ -109,7 +109,6 @@ class Game():
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)
-            sleep(0.01)
             self.balls = [
                 ball for ball in self.balls if ball not in ballstoremove]
             if len(self.balls) == 0:
