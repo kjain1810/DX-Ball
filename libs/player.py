@@ -6,7 +6,7 @@ class Player():
     """The main player class"""
 
     def __init__(self):
-        self.paddleLength = 5
+        self.paddleLength = INIT_PADDLE_LENGTH
         self.paddleLeft = int(BOARD_WIDTH / 2 - 5)
         self.catchBalls = False
         self.lives = 3
@@ -14,6 +14,7 @@ class Player():
         self.time = 0
         self.speed = 1
         self.start_time = time()
+        self.grabPaddle = False
 
     def movePaddleLeft(self, balls):
         """Moving the paddle to the left if it can"""

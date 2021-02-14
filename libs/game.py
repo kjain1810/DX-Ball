@@ -5,7 +5,7 @@ from .input import Get, input_to
 from .settings import *
 from .output import clearscreen, outputboard, endgame, newlife
 from .player import Player
-from .utils import create_level
+from .utils import create_level, get_powerup
 from .ball import Ball
 from .debugger import debugger
 
@@ -21,6 +21,7 @@ class Game():
         self.board_objects = create_level()
         self.balls = [Ball(
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
+        self.powerups = []
         self.game_board = self.construct_game_board()
         self.looper()
 
@@ -38,6 +39,8 @@ class Game():
             ret[obj.x][obj.y] = obj.otp
         for ball in self.balls:
             ret[ball.x][ball.y] = ball.otp
+        for powerup in self.powerups:
+            ret[powerup.x][powerup.y] = powerup.otp
         return ret
 
     def looper(self):
@@ -64,6 +67,14 @@ class Game():
                         can_collide.append(obj)
                 if len(can_collide) == 0:
                     continue
+                if ball.thru_ball == True:
+                    for obj in can_collide:
+                        obj_torem.append(obj)
+                        newPowerUp = get_powerup(obj.x, obj.y)
+                        if newPowerUp != None:
+                            self.powerups.append(newPowerUp)
+                        self.player.increaseScore()
+                    continue
                 does_collide = can_collide[0]
                 if len(can_collide) == 2:
                     if can_collide[1].dist(ball) < does_collide.dist(ball):
@@ -76,19 +87,26 @@ class Game():
                 if does_collide.collide(ball) == True:
                     obj_torem.append(does_collide)
                     self.player.increaseScore()
+                    newPowerUp = get_powerup(does_collide.x, does_collide.y)
+                    if newPowerUp != None:
+                        self.powerups.append(newPowerUp)
+            debugger.debug(self.powerups)
             tmp = []
             for obj in self.board_objects:
                 if obj not in obj_torem:
                     tmp.append(obj)
             self.board_objects = tmp
             self.balls = [ball for ball in self.balls if ball.move(
-                self.player.paddleLeft, self.player.paddleLength, self.board_objects)]
+                self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle)]
+            self.powerups = [
+                powerup for powerup in self.powerups if powerup.move(self.player, self.balls)]
             self.player.setTime()
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)
             sleep(0.01/self.player.speed)
             if len(self.balls) == 0:
+                sleep(1)
                 self.player.reduceLife()
                 if self.player.lives == 0:
                     endgame(self.player.score)

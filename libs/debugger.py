@@ -10,7 +10,7 @@ class Debugger():
     def printDebugs(self):
         for obj in self.debuglist:
             print(obj)
-        # self.clearDebugs()
+        self.clearDebugs()
 
     def clearDebugs(self):
         self.debuglist = []

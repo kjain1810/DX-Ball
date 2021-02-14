@@ -1,5 +1,8 @@
+from random import random
+
 from .settings import *
 from .bricks import Bricks
+from .powerups import *
 
 
 def create_level():
@@ -20,3 +23,27 @@ def create_test_level_0():
     for i in range(7):
         ret.append(Bricks(i, 25, 10000, False))
     return ret
+
+
+def get_powerup(x, y):
+    num = random()
+    summation = 0
+    summation += PROB_BALL_FAST
+    if summation >= num:
+        return FastBall(x, y)
+    summation += PROB_BALL_MULTIPLIER
+    if summation >= num:
+        return BallMultiplier(x, y)
+    summation += PROB_BALL_THRU
+    if summation >= num:
+        return ThruBall(x, y)
+    summation += PROB_PADDLE_EXPAND
+    if summation >= num:
+        return ExpandPaddle(x, y)
+    summation += PROB_PADDLE_GRAB
+    if summation >= num:
+        return PaddleGrab(x, y)
+    summation += PROB_PADDLE_SHRINK
+    if summation >= num:
+        return ShrinkPaddle(x, y)
+    return None
