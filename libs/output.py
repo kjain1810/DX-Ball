@@ -82,5 +82,6 @@ def newlife(player):
     print("LIFES REMAINING: ", player.lives)
     player.paddleLength = INIT_PADDLE_LENGTH
     player.paddleLeft = int(BOARD_WIDTH / 2 - INIT_PADDLE_LENGTH)
+    player.grabPaddle = 0
     sleep(SLEEPTIME)
     clearscreen()

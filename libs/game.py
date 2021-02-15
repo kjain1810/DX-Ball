@@ -55,7 +55,7 @@ class Game():
     def looper(self):
         """The main loop function"""
         while True:
-            x = input_to(self.getter)
+            x = input_to(self.getter, self.player.speed)
             if x == 'a':
                 self.player.movePaddleLeft(self.balls)
             elif x == 'd':
@@ -76,7 +76,7 @@ class Game():
                         can_collide.append(obj)
                 if len(can_collide) == 0:
                     continue
-                if ball.thru_ball == True:
+                if ball.thru_ball > 0:
                     for obj in can_collide:
                         obj_torem.append(obj)
                         newPowerUp = get_powerup(obj.x, obj.y)
@@ -111,6 +111,7 @@ class Game():
             outputboard(self.game_board, self.player)
             self.balls = [
                 ball for ball in self.balls if ball not in ballstoremove]
+            self.player.checkPowerUps()
             if len(self.balls) == 0:
                 sleep(1)
                 self.player.reduceLife()

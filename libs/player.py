@@ -14,7 +14,10 @@ class Player():
         self.score = 0
         self.time = 0
         self.start_time = time()
-        self.grabPaddle = False
+        self.grabPaddle = 0
+        self.changePaddleSize = []
+        self.speed = 1
+        self.changeSpeed = []
 
     def movePaddleLeft(self, balls):
         """Moving the paddle to the left if it can"""
@@ -57,3 +60,67 @@ class Player():
     def increaseScore(self, points):
         """Update the score of the player"""
         self.score += points
+
+    def checkPowerUps(self):
+        if self.grabPaddle > 0:
+            self.grabPaddle -= 1
+
+        to_rem = []
+        for upd in self.changePaddleSize:
+            upd["time"] -= 1
+            if upd["time"] == 0:
+                if upd["action"] == "increase":
+                    self.increasePaddleSize(powerup=False)
+                elif upd["action"] == "decrease":
+                    self.decreasePaddleSize(powerup=False)
+                to_rem.append(upd)
+        self.changePaddleSize = [
+            upd for upd in self.changePaddleSize if upd not in to_rem]
+
+        to_rem = []
+        for upd in self.changeSpeed:
+            print(upd)
+            upd["time"] -= 1
+            if upd["time"] == 0:
+                if upd["action"] == "increase":
+                    self.increaseSpeed(powerup=False)
+                elif upd["action"] == "decrease":
+                    self.decreaseSpeed(powerup=False)
+                to_rem.append(upd)
+        self.changeSpeed = [
+            upd for upd in self.changeSpeed if upd not in to_rem]
+
+    def increasePaddleSize(self, powerup=True):
+        self.paddleLength += 2
+        self.paddleLeft -= 1
+        if self.paddleLength > MAX_PADDLE_LENGTH:
+            self.paddleLength = MAX_PADDLE_LENGTH
+        if self.paddleLeft < 0:
+            self.paddleLeft = 0
+        if self.paddleLeft + self.paddleLength - 1 >= BOARD_WIDTH:
+            self.paddleLeft = BOARD_WIDTH - self.paddleLength
+        if powerup:
+            self.changePaddleSize.append(
+                {"action": "decrease", "time": POWERUP_TIME})
+
+    def decreasePaddleSize(self, powerup=True):
+        self.paddleLength -= 2
+        if self.paddleLength < MIN_PADDLE_LENGTH:
+            self.paddleLength = MIN_PADDLE_LENGTH
+        else:
+            self.paddleLeft += 1
+        if powerup:
+            self.changePaddleSize.append(
+                {"action": "increase", "time": POWERUP_TIME})
+
+    def increaseSpeed(self, powerup=True):
+        self.speed += 1
+        if powerup:
+            self.changeSpeed.append(
+                {"action": "decrease", "time": POWERUP_TIME})
+
+    def decreaseSpeed(self, powerup=True):
+        self.speed -= 1
+        if powerup:
+            self.changeSpeed.append(
+                {"action": "increase", "time": POWERUP_TIME})

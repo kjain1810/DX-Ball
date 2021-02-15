@@ -34,14 +34,7 @@ class ExpandPaddle(PowerUps):
 
     def doPowerUp(self, player, balls):
         """Expansd the paddle of the player"""
-        player.paddleLength += 2
-        player.paddleLeft -= 1
-        if player.paddleLength > MAX_PADDLE_LENGTH:
-            player.paddleLength = MAX_PADDLE_LENGTH
-        if player.paddleLeft < 0:
-            player.paddleLeft = 0
-        if player.paddleLeft + player.paddleLength - 1 > BOARD_WIDTH:
-            player.paddleLeft = BOARD_WIDTH - player.paddleLength
+        player.increasePaddleSize()
 
 
 class ShrinkPaddle(PowerUps):
@@ -53,11 +46,7 @@ class ShrinkPaddle(PowerUps):
 
     def doPowerUp(self, player, balls):
         """Shrinks the paddle of the player"""
-        player.paddleLength = player.paddleLength - 2
-        if player.paddleLength < MIN_PADDLE_LENGTH:
-            player.paddleLength = MIN_PADDLE_LENGTH
-        else:
-            player.paddleLeft += 1
+        player.decreasePaddleSize()
 
 
 class BallMultiplier(PowerUps):
@@ -70,7 +59,7 @@ class BallMultiplier(PowerUps):
         newBalls = []
         for ball in balls:
             newBalls.append(
-                Ball(ball.x, ball.y, ball.velocity["x"], -ball.velocity["y"], ball.thru_ball))
+                Ball(ball.x, ball.y, ball.velocity["x"], -ball.velocity["y"], ball.thru_ball, True))
         for ball in newBalls:
             balls.append(ball)
 
@@ -84,11 +73,12 @@ class FastBall(PowerUps):
 
     def doPowerUp(self, player, balls):
         """Increases speed of each ball"""
-        for ball in balls:
-            if ball.velocity["y"] == 0 or abs(ball.velocity["y"]) == MAX_BALL_VELOCITY:
-                continue
-            ball.velocity["y"] = int(abs(
-                ball.velocity["y"] + 1) * (ball.velocity["y"]//abs(ball.velocity["y"])))
+        player.increaseSpeed()
+        # for ball in balls:
+        #     if ball.velocity["y"] == 0 or abs(ball.velocity["y"]) == MAX_BALL_VELOCITY:
+        #         continue
+        #     ball.velocity["y"] = int(abs(
+        #         ball.velocity["y"] + 1) * (ball.velocity["y"]//abs(ball.velocity["y"])))
 
 
 class ThruBall(PowerUps):
@@ -101,7 +91,7 @@ class ThruBall(PowerUps):
     def doPowerUp(self, player, balls):
         """Makes the ball a thru ball"""
         for ball in balls:
-            ball.thru_ball = True
+            ball.thru_ball = POWERUP_TIME
 
 
 class PaddleGrab(PowerUps):
@@ -113,4 +103,4 @@ class PaddleGrab(PowerUps):
 
     def doPowerUp(self, player, balls):
         """Makes the paddle grab stuff"""
-        player.grabPaddle = True
+        player.grabPaddle = POWERUP_TIME

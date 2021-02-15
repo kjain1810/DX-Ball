@@ -8,9 +8,12 @@ from .debugger import debugger
 class Ball(Block):
     """Class that defines the balls"""
 
-    def __init__(self, x, y, velx, vely, thru_ball=False):
+    def __init__(self, x, y, velx, vely, thru_ball=0, copy_ball=False):
         Block.__init__(self, x, y, velx, vely, Back.WHITE + Fore.BLACK + "OOO")
         self.thru_ball = thru_ball
+        self.copy_ball = copy_ball
+        if copy_ball:
+            self.ball_time = POWERUP_TIME
 
     def release(self, paddleLeft, paddleLength):
         """Releases a ball that is resting on the paddle"""
@@ -19,12 +22,18 @@ class Ball(Block):
 
     def move(self, paddleLeft, paddleLength, objects, grabPaddle):
         """Moves the balls according to their velocities"""
+        if self.thru_ball > 0:
+            self.thru_ball -= 1
+        if self.copy_ball:
+            self.ball_time -= 1
+            if self.ball_time == 0:
+                return False
         if self.velocity["x"] == 0:
             return True
         self.x += self.velocity["x"]
         oldy = self.y
         self.y += self.velocity["y"]
-        if self.thru_ball == False:
+        if self.thru_ball == 0:
             for obj in objects:
                 if obj.x == self.x and obj.y > oldy and obj.y <= self.y and self.velocity["y"] > 0:
                     self.y = obj.y - 1
@@ -35,7 +44,7 @@ class Ball(Block):
             self.velocity["x"] = -self.velocity["x"]
         if self.x >= BOARD_HEIGHT - 1:
             if self.y >= paddleLeft and self.y < paddleLeft + paddleLength:
-                if grabPaddle:
+                if grabPaddle > 0:
                     self.velocity["x"] = 0
                     self.velocity["y"] = 0
                 else:
