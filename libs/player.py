@@ -1,5 +1,6 @@
-from .settings import *
 from time import time
+
+from .settings import *
 
 
 class Player():

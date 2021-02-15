@@ -1,4 +1,4 @@
-import subprocess as sp
+import os
 from time import sleep
 from colorama import Style
 from tabulate import tabulate
@@ -39,7 +39,7 @@ tabulated = tabulate(instructions, instruction_header, tablefmt="orgtbl")
 
 def clearscreen():
     """Clears the screen"""
-    sp.call('clear', shell=True)
+    os.system("clear")
 
 
 def outputboard(board, player):
