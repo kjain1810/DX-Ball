@@ -79,7 +79,6 @@ class Player():
 
         to_rem = []
         for upd in self.changeSpeed:
-            print(upd)
             upd["time"] -= 1
             if upd["time"] == 0:
                 if upd["action"] == "increase":

@@ -1,7 +1,6 @@
 import os
 from time import sleep
 from colorama import Style
-from tabulate import tabulate
 
 from .debugger import debugger
 from .settings import *
@@ -33,8 +32,9 @@ instructions = [
     ["Thru ball", ThruBall(0, 0).otp + Style.RESET_ALL,
      "Makes the ball(s) go through everything except the paddle"]
 ]
-instruction_header = ["Object", "Symbol", "Description"]
-tabulated = tabulate(instructions, instruction_header, tablefmt="orgtbl")
+tabulated = ""
+for ins in instructions:
+    tabulated += ins[1] + ": " + ins[0] + ", " + ins[2] + "\n"
 
 
 def clearscreen():

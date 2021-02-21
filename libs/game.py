@@ -29,7 +29,7 @@ class Game():
         """Assing a position on the board if possible"""
         if obj.x < 0 or obj.y < 0:
             return False
-        if obj.x > BOARD_HEIGHT or obj.y > BOARD_WIDTH:
+        if obj.x >= BOARD_HEIGHT or obj.y >= BOARD_WIDTH:
             return False
         board[obj.x][obj.y] = obj.otp
         return True

@@ -74,11 +74,6 @@ class FastBall(PowerUps):
     def doPowerUp(self, player, balls):
         """Increases speed of each ball"""
         player.increaseSpeed()
-        # for ball in balls:
-        #     if ball.velocity["y"] == 0 or abs(ball.velocity["y"]) == MAX_BALL_VELOCITY:
-        #         continue
-        #     ball.velocity["y"] = int(abs(
-        #         ball.velocity["y"] + 1) * (ball.velocity["y"]//abs(ball.velocity["y"])))
 
 
 class ThruBall(PowerUps):
