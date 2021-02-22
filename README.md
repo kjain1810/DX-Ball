@@ -1,3 +1,3 @@
-# Break Breaker Terminal Simulator
+# DX Ball Terminal Simulator
 
-A terminal based simulator of the game Space Invaders
+A terminal based simulator of the game DX Ball
