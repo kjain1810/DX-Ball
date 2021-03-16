@@ -20,7 +20,7 @@ class Ball(Block):
         self.velocity["x"] = -1
         self.velocity["y"] = self.y - int(paddleLeft + paddleLength / 2)
 
-    def move(self, paddleLeft, paddleLength, objects, grabPaddle):
+    def move(self, paddleLeft, paddleLength, objects, grabPaddle, fallBricks):
         """Moves the balls according to their velocities"""
         if self.thru_ball > 0:
             self.thru_ball -= 1
@@ -51,6 +51,9 @@ class Ball(Block):
                     self.velocity["x"] = -self.velocity["x"]
                     self.velocity["y"] = self.y - \
                         int(paddleLeft + paddleLength / 2)
+                if fallBricks:
+                    for obj in objects:
+                        obj.x += 1
                 return True
             return False
         if self.y < 0:

@@ -6,7 +6,9 @@ BLOCK_WIDTH = int(3)  # Widh of 1 block
 INIT_PADDLE_LENGTH = int(5)  # Lenght of paddle on each new life
 PADDLE_OUTPUT = Back.WHITE + Fore.BLACK + "==="  # Output of the paddle
 SLEEPTIME = 1  # Sleep time on life lost message
-POWERUP_TIME = 100
+POWERUP_TIME = 100  # Time for which powerups remain active
+RAINBOW_TIME = 1  # INTERVAL BETWEEN RAINBOW BRICK UPDATE
+FALL_TIME = 90  # INTERVAL BETWEEN BRICK FALLS
 
 PROB_PADDLE_EXPAND = 0.1  # Probability of breaking brick release expand paddle
 PROB_PADDLE_SHRINK = 0.1  # Probability of breaking brick release shrink paddle

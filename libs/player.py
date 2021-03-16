@@ -14,7 +14,11 @@ class Player():
         self.lives = 3
         self.score = 0
         self.time = 0
-        self.lUpdate = 0
+        self.levelTime = 0
+        self.level_start_time = time()
+        self.lUpdateRainbow = 0
+        self.lUpdateFall = 0
+        self.fallingBricks = False
         self.start_time = time()
         self.grabPaddle = 0
         self.changePaddleSize = []
@@ -30,6 +34,9 @@ class Player():
         self.changePaddleSize = []
         self.speed = 1
         self.changeSpeed = []
+        self.level_start_time = time()
+        self.levelTime = 0
+        self.fallingBricks = False
 
     def movePaddleLeft(self, balls):
         """Moving the paddle to the left if it can"""
@@ -68,11 +75,14 @@ class Player():
     def setTime(self, bricks):
         """Set the playing time of the player"""
         self.time = int(time() - self.start_time)
-        if self.time - self.lUpdate >= 1:
-            self.lUpdate = self.time
+        self.levelTime = int(time() - self.level_start_time)
+        if self.time - self.lUpdateRainbow >= RAINBOW_TIME:
+            self.lUpdateRainbow = self.time
             for brick in bricks:
                 if type(brick) == RainbowBrick:
                     brick.changeCol()
+        if self.levelTime >= FALL_TIME:
+            self.fallingBricks = True
 
     def increaseScore(self, points):
         """Update the score of the player"""

@@ -104,7 +104,7 @@ class Game():
             self.board_objects = [
                 obj for obj in self.board_objects if obj not in obj_torem]
             ballstoremove = [ball for ball in self.balls if ball.move(
-                self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle) == False]
+                self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle, self.player.fallingBricks) == False]
             self.powerups = [
                 powerup for powerup in self.powerups if powerup.move(self.player, self.balls)]
             self.player.setTime(self.board_objects)
@@ -114,6 +114,10 @@ class Game():
             self.balls = [
                 ball for ball in self.balls if ball not in ballstoremove]
             self.player.checkPowerUps()
+            for obj in self.board_objects:
+                if obj.x >= BOARD_HEIGHT - 1:
+                    endgame(self.player.score)
+                    return
             if len(self.balls) == 0:
                 sleep(1)
                 self.player.reduceLife()
