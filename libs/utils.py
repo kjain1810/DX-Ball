@@ -1,7 +1,7 @@
 from random import random
 
 from .settings import *
-from .bricks import Bricks
+from .bricks import Bricks, RainbowBrick
 from .powerups import *
 
 
@@ -25,12 +25,12 @@ def create_level(level):
             ret.append(Bricks(1, i, 2))
             ret.append(Bricks(1, BOARD_WIDTH - i - 1, 2))
         for i in range((BOARD_WIDTH - 10) // 2, BOARD_WIDTH - (BOARD_WIDTH - 10) // 2):
-            ret.append(Bricks(1, i, 10000, False))
+            ret.append(RainbowBrick(1, i))
         for i in range((BOARD_WIDTH - 20) // 2):
             ret.append(Bricks(2, i, 1))
             ret.append(Bricks(2, BOARD_WIDTH - i - 1, 1))
         for i in range((BOARD_WIDTH - 20) // 2, BOARD_WIDTH - (BOARD_WIDTH - 20) // 2):
-            ret.append(Bricks(2, i, 10000, False))
+            ret.append(RainbowBrick(2, i))
         return ret
     else:
         # boss level

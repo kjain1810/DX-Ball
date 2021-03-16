@@ -107,7 +107,7 @@ class Game():
                 self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle) == False]
             self.powerups = [
                 powerup for powerup in self.powerups if powerup.move(self.player, self.balls)]
-            self.player.setTime()
+            self.player.setTime(self.board_objects)
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)

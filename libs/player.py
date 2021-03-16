@@ -1,6 +1,7 @@
 from time import time
 
 from .settings import *
+from .bricks import RainbowBrick
 
 
 class Player():
@@ -13,6 +14,7 @@ class Player():
         self.lives = 3
         self.score = 0
         self.time = 0
+        self.lUpdate = 0
         self.start_time = time()
         self.grabPaddle = 0
         self.changePaddleSize = []
@@ -63,9 +65,14 @@ class Player():
         """When the player loses all the balls"""
         self.lives -= 1
 
-    def setTime(self):
+    def setTime(self, bricks):
         """Set the playing time of the player"""
         self.time = int(time() - self.start_time)
+        if self.time - self.lUpdate >= 1:
+            self.lUpdate = self.time
+            for brick in bricks:
+                if type(brick) == RainbowBrick:
+                    brick.changeCol()
 
     def increaseScore(self, points):
         """Update the score of the player"""

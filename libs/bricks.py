@@ -46,3 +46,25 @@ class Bricks(Block):
         self.otp = levelColors[self.level] + \
             " " * BLOCK_WIDTH + Style.RESET_ALL
         return False
+
+
+class RainbowBrick(Bricks):
+    def __init__(self, x, y):
+        Bricks.__init__(self, x, y, 1)
+        self.fixed = False
+
+    def changeCol(self):
+        if self.fixed:
+            return
+        self.level += 1
+        if self.level == 4:
+            self.level = 1
+        self.otp = Style.DIM + \
+            levelColors[self.level] + " " * BLOCK_WIDTH + Style.RESET_ALL
+
+    def takeHit(self):
+        if self.fixed:
+            return Bricks.takeHit(self)
+        else:
+            self.fixed = True
+            return False
