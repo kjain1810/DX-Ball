@@ -5,24 +5,42 @@ from .bricks import Bricks
 from .powerups import *
 
 
-def create_level():
+def create_level(level):
     """Creates the initial level"""
-    ret = []
-    for i in range(3):
-        level = 3 - i
-        y = i
-        for j in range(BOARD_WIDTH):
-            ret.append(Bricks(y, j, level))
-    for i in range(10, BOARD_WIDTH - 10):
-        ret.append(Bricks(3, i, 10000, False))
-    return ret
+    if level == 0:
+        ret = []
+        for i in range(3):
+            level = 3 - i
+            y = i
+            for j in range(BOARD_WIDTH):
+                ret.append(Bricks(y, j, level))
+        for i in range(10, BOARD_WIDTH - 10):
+            ret.append(Bricks(3, i, 10000, False))
+        return ret
+    elif level == 1:
+        ret = []
+        for i in range(BOARD_WIDTH):
+            ret.append(Bricks(0, i, 3))
+        for i in range((BOARD_WIDTH - 10) // 2):
+            ret.append(Bricks(1, i, 2))
+            ret.append(Bricks(1, BOARD_WIDTH - i - 1, 2))
+        for i in range((BOARD_WIDTH - 10) // 2, BOARD_WIDTH - (BOARD_WIDTH - 10) // 2):
+            ret.append(Bricks(1, i, 10000, False))
+        for i in range((BOARD_WIDTH - 20) // 2):
+            ret.append(Bricks(2, i, 1))
+            ret.append(Bricks(2, BOARD_WIDTH - i - 1, 1))
+        for i in range((BOARD_WIDTH - 20) // 2, BOARD_WIDTH - (BOARD_WIDTH - 20) // 2):
+            ret.append(Bricks(2, i, 10000, False))
+        return ret
+    else:
+        # boss level
+        pass
 
 
 def create_test_level_0():
     """A test level"""
     ret = []
-    for i in range(7):
-        ret.append(Bricks(i, 25, 10000, False))
+    ret.append(Bricks(0, 19, 1))
     return ret
 
 

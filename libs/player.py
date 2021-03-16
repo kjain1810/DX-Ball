@@ -18,6 +18,16 @@ class Player():
         self.changePaddleSize = []
         self.speed = 1
         self.changeSpeed = []
+        self.level = 0
+
+    def resetLevel(self):
+        self.paddleLength = INIT_PADDLE_LENGTH
+        self.paddleLeft = int(BOARD_WIDTH / 2 - INIT_PADDLE_LENGTH)
+        self.catchBalls = False
+        self.grabPaddle = 0
+        self.changePaddleSize = []
+        self.speed = 1
+        self.changeSpeed = []
 
     def movePaddleLeft(self, balls):
         """Moving the paddle to the left if it can"""

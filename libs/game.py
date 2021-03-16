@@ -3,7 +3,7 @@ from time import sleep
 
 from .input import Get, input_to
 from .settings import *
-from .output import clearscreen, outputboard, endgame, newlife
+from .output import clearscreen, outputboard, endgame, newlife, printWinner, showLevelUp
 from .player import Player
 from .utils import create_level, get_powerup
 from .ball import Ball
@@ -18,7 +18,7 @@ class Game():
     def __init__(self):
         self.getter = Get()
         self.player = Player()
-        self.board_objects = create_level()
+        self.board_objects = create_level(0)
         self.balls = [Ball(
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
         self.powerups = []
@@ -121,6 +121,21 @@ class Game():
                 else:
                     newlife(self.player)
                     self.startNewLife()
+            if len(self.board_objects) == 0:
+                self.player.level += 1
+                if self.player.level == 3:
+                    printWinner()
+                    return
+                showLevelUp()
+                self.resetLevel()
+
+    def resetLevel(self):
+        self.board_objects = create_level(self.player.level)
+        self.player.resetLevel()
+        self.balls = [Ball(
+            BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
+        self.powerups = []
+        self.game_board = self.construct_game_board()
 
     def startNewLife(self):
         """Starts a new life for the player"""

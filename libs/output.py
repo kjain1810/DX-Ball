@@ -75,6 +75,16 @@ def endgame(score):
     sleep(SLEEPTIME)
 
 
+def printWinner():
+    print("YOU WIN THE GAME!")
+
+
+def showLevelUp():
+    print("Congrats!")
+    print("Level finished!")
+    sleep(SLEEPTIME)
+
+
 def newlife(player):
     """Output when life is lost"""
     clearscreen()
