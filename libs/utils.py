@@ -66,4 +66,7 @@ def get_powerup(x, y, vely):
     summation += PROB_PADDLE_SHRINK
     if summation >= num:
         return ShrinkPaddle(x, y, vely)
+    summation += PROB_SHOOTING_PADDLE
+    if summation >= num:
+        return ShootingPaddle(x, y, vely)
     return None

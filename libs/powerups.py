@@ -106,3 +106,13 @@ class PaddleGrab(PowerUps):
     def doPowerUp(self, player, balls):
         """Makes the paddle grab stuff"""
         player.grabPaddle = POWERUP_TIME
+
+
+class ShootingPaddle(PowerUps):
+
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT +
+                          Fore.BLACK + Back.GREEN + " S " + Style.RESET_ALL)
+
+    def doPowerUp(self, player, balls):
+        player.shootingPaddle = POWERUP_TIME

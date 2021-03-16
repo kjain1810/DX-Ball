@@ -22,6 +22,7 @@ class Game():
         self.balls = [Ball(
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
         self.powerups = []
+        self.bullets = []
         self.game_board = self.construct_game_board()
         self.looper()
 
@@ -42,14 +43,15 @@ class Game():
             for j in range(BOARD_WIDTH):
                 line.append(Back.BLACK + " " * BLOCK_WIDTH + Style.RESET_ALL)
             ret.append(line)
-        for i in range(self.player.paddleLeft, self.player.paddleLeft + self.player.paddleLength):
-            ret[BOARD_HEIGHT - 1][i] = PADDLE_OUTPUT
+        ret = self.player.setPaddleOutput(ret)
         self.board_objects = [
             obj for obj in self.board_objects if self.assing_obj(ret, obj)]
         self.balls = [
             ball for ball in self.balls if self.assing_obj(ret, ball)]
         self.powerups = [
             powerup for powerup in self.powerups if self.assing_obj(ret, powerup)]
+        self.bullets = [
+            bullet for bullet in self.bullets if self.assing_obj(ret, bullet)]
         return ret
 
     def looper(self):
@@ -65,9 +67,29 @@ class Game():
                     if ball.velocity["x"] == 0:
                         ball.release(self.player.paddleLeft,
                                      self.player.paddleLength)
+                if self.player.shootingPaddle:
+                    self.player.makeShot(self.bullets)
             elif x == 'q':
                 print("Bye!")
                 break
+
+            # MOVE BULLETS
+            obj_torem = []
+            bullet_torem = []
+            for bullet in self.bullets:
+                for obj in self.board_objects:
+                    if bullet.x == obj.x and bullet.y == obj.y:
+                        torem = obj.takeHit()
+                        if torem:
+                            obj_torem.append(obj)
+                        bullet_torem.append(bullet)
+            self.bullets = [
+                bullet for bullet in self.bullets if bullet not in bullet_torem]
+            self.bullets = [bullet for bullet in self.bullets if bullet.move()]
+            self.board_objects = [
+                obj for obj in self.board_objects if obj not in obj_torem]
+
+            # MOVE BALLS
             obj_torem = []
             for ball in self.balls:
                 can_collide = []
@@ -105,12 +127,20 @@ class Game():
                 obj for obj in self.board_objects if obj not in obj_torem]
             ballstoremove = [ball for ball in self.balls if ball.move(
                 self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle, self.player.fallingBricks) == False]
+
+            # MOVE POWERUPS
             self.powerups = [
                 powerup for powerup in self.powerups if powerup.move(self.player, self.balls)]
+
+            # DO TIME STUFF
             self.player.setTime(self.board_objects)
+
+            # PRINT
             clearscreen()
             self.game_board = self.construct_game_board()
             outputboard(self.game_board, self.player)
+
+            # RECALCULATE BALLS AND POWERUPS
             self.balls = [
                 ball for ball in self.balls if ball not in ballstoremove]
             self.player.checkPowerUps()

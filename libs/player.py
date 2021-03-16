@@ -2,6 +2,7 @@ from time import time
 
 from .settings import *
 from .bricks import RainbowBrick
+from .bullets import Bullet
 
 
 class Player():
@@ -25,6 +26,8 @@ class Player():
         self.speed = 1
         self.changeSpeed = []
         self.level = 0
+        self.shootingPaddle = 0
+        self.lBullet = 0
 
     def resetLevel(self):
         self.paddleLength = INIT_PADDLE_LENGTH
@@ -37,6 +40,27 @@ class Player():
         self.level_start_time = time()
         self.levelTime = 0
         self.fallingBricks = False
+        self.shootingPaddle = 0
+
+    def makeShot(self, bullets):
+        if self.time - self.lBullet < BULLET_TIME:
+            return
+        self.lBullet = self.time
+        bullets.append(Bullet(BOARD_HEIGHT - 1, self.paddleLeft))
+        bullets.append(
+            Bullet(BOARD_HEIGHT - 1, self.paddleLeft + self.paddleLength - 1))
+
+    def setPaddleOutput(self, ret):
+        if self.shootingPaddle == 0:
+            for i in range(self.paddleLeft, self.paddleLeft + self.paddleLength):
+                ret[BOARD_HEIGHT - 1][i] = PADDLE_OUTPUT
+        else:
+            for i in range(self.paddleLeft + 1, self.paddleLeft + self.paddleLength - 1):
+                ret[BOARD_HEIGHT - 1][i] = PADDLE_OUTPUT
+            ret[BOARD_HEIGHT - 1][self.paddleLeft] = PADDLE_SHOOTER_OUTPUT
+            ret[BOARD_HEIGHT - 1][self.paddleLeft +
+                                  self.paddleLength - 1] = PADDLE_SHOOTER_OUTPUT
+        return ret
 
     def movePaddleLeft(self, balls):
         """Moving the paddle to the left if it can"""
@@ -91,7 +115,8 @@ class Player():
     def checkPowerUps(self):
         if self.grabPaddle > 0:
             self.grabPaddle -= 1
-
+        if self.shootingPaddle > 0:
+            self.shootingPaddle -= 1
         to_rem = []
         for upd in self.changePaddleSize:
             upd["time"] -= 1
