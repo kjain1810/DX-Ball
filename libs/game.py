@@ -79,7 +79,8 @@ class Game():
                 if ball.thru_ball > 0:
                     for obj in can_collide:
                         obj_torem.append(obj)
-                        newPowerUp = get_powerup(obj.x, obj.y)
+                        newPowerUp = get_powerup(
+                            obj.x, obj.y, ball.velocity["y"])
                         if newPowerUp != None:
                             self.powerups.append(newPowerUp)
                         self.player.increaseScore(obj.points)
@@ -96,7 +97,8 @@ class Game():
                 if does_collide.collide(ball) == True:
                     obj_torem.append(does_collide)
                     self.player.increaseScore(does_collide.points)
-                    newPowerUp = get_powerup(does_collide.x, does_collide.y)
+                    newPowerUp = get_powerup(
+                        does_collide.x, does_collide.y, ball.velocity["y"])
                     if newPowerUp != None:
                         self.powerups.append(newPowerUp)
             self.board_objects = [

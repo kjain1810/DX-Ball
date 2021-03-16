@@ -20,16 +20,16 @@ instructions = [
     ["Brick level 3", Bricks(0, 0, 3).otp + Style.RESET_ALL,
      "Brick that breaks with 3 hit, fetches 3 point"],
     ["Expand paddle", ExpandPaddle(
-        0, 0).otp + Style.RESET_ALL, "Increases the paddle length"],
+        0, 0, 0).otp + Style.RESET_ALL, "Increases the paddle length"],
     ["Shrink paddle", ShrinkPaddle(
-        0, 0).otp + Style.RESET_ALL, "Decreases the paddle length"],
-    ["Grab paddle", PaddleGrab(0, 0).otp + Style.RESET_ALL,
+        0, 0, 0).otp + Style.RESET_ALL, "Decreases the paddle length"],
+    ["Grab paddle", PaddleGrab(0, 0, 0).otp + Style.RESET_ALL,
      "Makes the paddle grab the ball everytime"],
     ["Ball multiplier", BallMultiplier(
-        0, 0).otp + Style.RESET_ALL, "Doubles the number of balls present"],
-    ["Fast ball", FastBall(0, 0).otp + Style.RESET_ALL,
+        0, 0, 0).otp + Style.RESET_ALL, "Doubles the number of balls present"],
+    ["Fast ball", FastBall(0, 0, 0).otp + Style.RESET_ALL,
      "Increases the speed of the ball(s)"],
-    ["Thru ball", ThruBall(0, 0).otp + Style.RESET_ALL,
+    ["Thru ball", ThruBall(0, 0, 0).otp + Style.RESET_ALL,
      "Makes the ball(s) go through everything except the paddle"]
 ]
 tabulated = ""

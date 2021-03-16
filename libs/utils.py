@@ -44,26 +44,26 @@ def create_test_level_0():
     return ret
 
 
-def get_powerup(x, y):
+def get_powerup(x, y, vely):
     """Determines if brick should release powerup or not"""
     num = random()
     summation = 0
     summation += PROB_BALL_FAST
     if summation >= num:
-        return FastBall(x, y)
+        return FastBall(x, y, vely)
     summation += PROB_BALL_MULTIPLIER
     if summation >= num:
-        return BallMultiplier(x, y)
+        return BallMultiplier(x, y, vely)
     summation += PROB_BALL_THRU
     if summation >= num:
-        return ThruBall(x, y)
+        return ThruBall(x, y, vely)
     summation += PROB_PADDLE_EXPAND
     if summation >= num:
-        return ExpandPaddle(x, y)
+        return ExpandPaddle(x, y, vely)
     summation += PROB_PADDLE_GRAB
     if summation >= num:
-        return PaddleGrab(x, y)
+        return PaddleGrab(x, y, vely)
     summation += PROB_PADDLE_SHRINK
     if summation >= num:
-        return ShrinkPaddle(x, y)
+        return ShrinkPaddle(x, y, vely)
     return None

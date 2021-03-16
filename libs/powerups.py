@@ -8,8 +8,8 @@ from .ball import Ball
 class PowerUps(Block):
     """Parent class for the different powerups"""
 
-    def __init__(self, x, y, otp):
-        Block.__init__(self, x, y, 1, 0, otp)
+    def __init__(self, x, y, vely, otp):
+        Block.__init__(self, x, y, 1, vely, otp)
 
     def doPowerUp(self, player, balls):
         """Super function for all powerups"""
@@ -18,6 +18,13 @@ class PowerUps(Block):
     def move(self, player, balls):
         """Moves the powerup a block down"""
         self.x += self.velocity["x"]
+        self.y += self.velocity["y"]
+        if self.y < 0:
+            self.y = 0
+            self.velocity["y"] = -self.velocity["y"]
+        if self.y >= BOARD_WIDTH:
+            self.y = BOARD_WIDTH - 1
+            self.velocity["y"] = -self.velocity["y"]
         if self.x == BOARD_HEIGHT - 1:
             if self.y >= player.paddleLeft and self.y < player.paddleLeft + player.paddleLength:
                 self.doPowerUp(player, balls)
@@ -28,8 +35,8 @@ class PowerUps(Block):
 class ExpandPaddle(PowerUps):
     """Power up to expand the player's paddle"""
 
-    def __init__(self, x, y):
-        PowerUps.__init__(self, x, y, Style.BRIGHT + Fore.BLACK +
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT + Fore.BLACK +
                           Back.GREEN + " E " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
@@ -40,8 +47,8 @@ class ExpandPaddle(PowerUps):
 class ShrinkPaddle(PowerUps):
     """Power up to shrink the player's paddle"""
 
-    def __init__(self, x, y):
-        PowerUps.__init__(self, x, y, Style.BRIGHT + Fore.BLACK +
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT + Fore.BLACK +
                           Back.RED + " S " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
@@ -50,8 +57,8 @@ class ShrinkPaddle(PowerUps):
 
 
 class BallMultiplier(PowerUps):
-    def __init__(self, x, y):
-        PowerUps.__init__(self, x, y, Style.BRIGHT + Fore.BLACK +
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT + Fore.BLACK +
                           Back.GREEN + " B " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
@@ -67,8 +74,8 @@ class BallMultiplier(PowerUps):
 class FastBall(PowerUps):
     """Power up to increase the speed of the ball"""
 
-    def __init__(self, x, y):
-        PowerUps.__init__(self, x, y, Style.BRIGHT + Fore.BLACK +
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT + Fore.BLACK +
                           Back.RED + " F " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
@@ -79,8 +86,8 @@ class FastBall(PowerUps):
 class ThruBall(PowerUps):
     """Power up to make the ball go through blocks"""
 
-    def __init__(self, x, y):
-        PowerUps.__init__(self, x, y, Style.BRIGHT + Fore.BLACK +
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT + Fore.BLACK +
                           Back.GREEN + " T " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
@@ -92,8 +99,8 @@ class ThruBall(PowerUps):
 class PaddleGrab(PowerUps):
     """Power up to make the paddle grab the balls"""
 
-    def __init__(self, x, y):
-        PowerUps.__init__(self, x, y, Style.BRIGHT + Fore.BLACK +
+    def __init__(self, x, y, vely):
+        PowerUps.__init__(self, x, y, vely, Style.BRIGHT + Fore.BLACK +
                           Back.GREEN + " G " + Style.RESET_ALL)
 
     def doPowerUp(self, player, balls):
