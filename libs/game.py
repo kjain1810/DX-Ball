@@ -65,6 +65,8 @@ class Game():
             else:
                 ret[x][y] = Back.BLACK + Fore.WHITE + " " + \
                     str(int(self.boss.strength)) + " " + Style.RESET_ALL
+            self.boss.bombs = [
+                bomb for bomb in self.boss.bombs if self.assing_obj(ret, bomb)]
         return ret
 
     def looper(self):
@@ -104,7 +106,8 @@ class Game():
                             obj_torem.append(obj)
                         bullet_torem.append(bullet)
                         if self.player.level == BOSS_LEVEL and obj.breakable == False:
-                            if self.boss.decrease_life() == False:
+                            new_life = self.boss.decrease_life()
+                            if new_life == 0:
                                 printWinner()
                                 return
             self.bullets = [
@@ -112,6 +115,9 @@ class Game():
             self.bullets = [bullet for bullet in self.bullets if bullet.move()]
             self.board_objects = [
                 obj for obj in self.board_objects if obj not in obj_torem]
+            if self.player.level == BOSS_LEVEL:
+                self.boss.minions = [
+                    obj for obj in self.boss.minions if obj not in obj_torem]
 
             # MOVE BALLS
             obj_torem = []
@@ -141,9 +147,15 @@ class Game():
                     elif can_collide[2].dist(ball) == 2:
                         does_collide = can_collide[2]
                 if self.player.level == BOSS_LEVEL and does_collide.breakable == False:
-                    if self.boss.decrease_life() == False:
+                    new_life = self.boss.decrease_life()
+                    if new_life == 0:
                         printWinner()
                         return
+                    elif new_life == BOSS_BRICK_ONE:
+                        self.boss.release_brick_1()
+                    elif new_life == BOSS_BRICK_TWO:
+                        self.boss.release_brick_2()
+
                 if does_collide.collide(ball) == True:
                     obj_torem.append(does_collide)
                     self.player.increaseScore(does_collide.points)
@@ -153,6 +165,9 @@ class Game():
                         self.powerups.append(newPowerUp)
             self.board_objects = [
                 obj for obj in self.board_objects if obj not in obj_torem]
+            if self.player.level == BOSS_LEVEL:
+                self.boss.minions = [
+                    obj for obj in self.boss.minions if obj not in obj_torem]
             ballstoremove = [ball for ball in self.balls if ball.move(
                 self.player.paddleLeft, self.player.paddleLength, self.board_objects, self.player.grabPaddle, self.player.fallingBricks) == False]
 
@@ -160,8 +175,24 @@ class Game():
             self.powerups = [
                 powerup for powerup in self.powerups if powerup.move(self.player, self.balls)]
 
+            # MOVE BOMBS
+            if self.player.level == BOSS_LEVEL:
+                for bomb in self.boss.bombs:
+                    if bomb.move(self.player):
+                        sleep(1)
+                        self.player.reduceLife()
+                        if self.player.lives == 0:
+                            endgame(self.player.score)
+                            return
+                        else:
+                            newlife(self.player)
+                            self.startNewLife()
+                            self.boss.reset_position()
+
             # DO TIME STUFF
             self.player.setTime(self.board_objects)
+            if self.player.level == BOSS_LEVEL and self.player.levelTime - self.boss.lastBomb >= BOMB_INTERVAL:
+                self.boss.release_bomb(self.player.levelTime)
 
             # PRINT
             clearscreen()

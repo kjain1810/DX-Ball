@@ -26,3 +26,6 @@ MAX_PADDLE_LENGTH = 21  # Maximum length of the paddle
 MAX_BALL_VELOCITY = 5  # Maximum velocity of the ball
 
 BOSS_LEVEL = 0
+BOSS_BRICK_ONE = 50
+BOSS_BRICK_TWO = 25
+BOMB_INTERVAL = 5

@@ -2,6 +2,7 @@ from colorama import Style, Back, Fore
 
 from .settings import *
 from .bricks import Bricks, InvisibleBricks
+from .bombs import Bombs
 
 
 class Boss():
@@ -10,6 +11,8 @@ class Boss():
         self.strength = 100
         self.leftEdge = BOARD_WIDTH // 2 - 7
         self.rightEdge = BOARD_WIDTH // 2 + 3
+        self.lastBomb = 0
+        self.bombs = []
         for i in range(self.leftEdge, self.rightEdge):
             self.objs.append(Bricks(0, i, 10000, False))
             self.objs.append(Bricks(3, i, 10000, False))
@@ -54,4 +57,16 @@ class Boss():
 
     def decrease_life(self):
         self.strength -= 1
-        return self.strength > 0
+        return self.strength
+
+    def release_brick_1(self):
+        for i in range(BOARD_WIDTH):
+            self.minions.append(Bricks(4, i, 1))
+
+    def release_brick_2(self):
+        for i in range(BOARD_WIDTH):
+            self.minions.append(Bricks(5, i, 3))
+
+    def release_bomb(self, time):
+        self.bombs.append(Bombs(5, (self.leftEdge + self.rightEdge) // 2))
+        self.lastBomb = time
