@@ -24,3 +24,5 @@ MIN_PADDLE_LENGTH = 3  # Minimum length of the paddle
 MAX_PADDLE_LENGTH = 21  # Maximum length of the paddle
 
 MAX_BALL_VELOCITY = 5  # Maximum velocity of the ball
+
+BOSS_LEVEL = 0

@@ -8,6 +8,7 @@ from .player import Player
 from .utils import create_level, get_powerup
 from .ball import Ball
 from .debugger import debugger
+from .boss import Boss
 
 from .utils import create_test_level_0
 
@@ -23,6 +24,7 @@ class Game():
             BOARD_HEIGHT - 1, int(self.player.paddleLeft + self.player.paddleLength / 2), 0, 0)]
         self.powerups = []
         self.bullets = []
+        self.boss = Boss()
         self.game_board = self.construct_game_board()
         self.looper()
 
@@ -52,6 +54,17 @@ class Game():
             powerup for powerup in self.powerups if self.assing_obj(ret, powerup)]
         self.bullets = [
             bullet for bullet in self.bullets if self.assing_obj(ret, bullet)]
+        if self.player.level == BOSS_LEVEL:
+            x = 1
+            y = (self.boss.leftEdge + self.boss.rightEdge) // 2
+            if self.boss.strength == 100:
+                ret[x][y] = Back.BLACK + Fore.WHITE + "100" + Style.RESET_ALL
+            elif self.boss.strength >= 10:
+                ret[x][y] = Back.BLACK + Fore.WHITE + \
+                    str(int(self.boss.strength)) + " " + Style.RESET_ALL
+            else:
+                ret[x][y] = Back.BLACK + Fore.WHITE + " " + \
+                    str(int(self.boss.strength)) + " " + Style.RESET_ALL
         return ret
 
     def looper(self):
@@ -60,8 +73,12 @@ class Game():
             x = input_to(self.getter, self.player.speed)
             if x == 'a':
                 self.player.movePaddleLeft(self.balls)
+                if self.player.level == BOSS_LEVEL:
+                    self.boss.move(-2)
             elif x == 'd':
                 self.player.movePaddleRight(self.balls)
+                if self.player.level == BOSS_LEVEL:
+                    self.boss.move(2)
             elif x == 'w':
                 for ball in self.balls:
                     if ball.velocity["x"] == 0:
@@ -73,6 +90,9 @@ class Game():
                 print("Bye!")
                 break
 
+            if self.player.level == BOSS_LEVEL:
+                self.board_objects = self.boss.get_objects()
+
             # MOVE BULLETS
             obj_torem = []
             bullet_torem = []
@@ -83,6 +103,10 @@ class Game():
                         if torem:
                             obj_torem.append(obj)
                         bullet_torem.append(bullet)
+                        if self.player.level == BOSS_LEVEL and obj.breakable == False:
+                            if self.boss.decrease_life() == False:
+                                printWinner()
+                                return
             self.bullets = [
                 bullet for bullet in self.bullets if bullet not in bullet_torem]
             self.bullets = [bullet for bullet in self.bullets if bullet.move()]
@@ -102,7 +126,7 @@ class Game():
                     for obj in can_collide:
                         obj_torem.append(obj)
                         newPowerUp = get_powerup(
-                            obj.x, obj.y, ball.velocity["y"])
+                            obj.x, obj.y, ball.velocity["y"], self.player.level)
                         if newPowerUp != None:
                             self.powerups.append(newPowerUp)
                         self.player.increaseScore(obj.points)
@@ -116,11 +140,15 @@ class Game():
                         does_collide = can_collide[1]
                     elif can_collide[2].dist(ball) == 2:
                         does_collide = can_collide[2]
+                if self.player.level == BOSS_LEVEL and does_collide.breakable == False:
+                    if self.boss.decrease_life() == False:
+                        printWinner()
+                        return
                 if does_collide.collide(ball) == True:
                     obj_torem.append(does_collide)
                     self.player.increaseScore(does_collide.points)
                     newPowerUp = get_powerup(
-                        does_collide.x, does_collide.y, ball.velocity["y"])
+                        does_collide.x, does_collide.y, ball.velocity["y"], self.player.level)
                     if newPowerUp != None:
                         self.powerups.append(newPowerUp)
             self.board_objects = [
@@ -144,10 +172,14 @@ class Game():
             self.balls = [
                 ball for ball in self.balls if ball not in ballstoremove]
             self.player.checkPowerUps()
+
+            # GAME OVER DUE TO FALLING BRICKS
             for obj in self.board_objects:
                 if obj.x >= BOARD_HEIGHT - 1:
                     endgame(self.player.score)
                     return
+
+            # LIFE OVER
             if len(self.balls) == 0:
                 sleep(1)
                 self.player.reduceLife()
@@ -157,11 +189,11 @@ class Game():
                 else:
                     newlife(self.player)
                     self.startNewLife()
+                    self.boss.reset_position()
+
+            # LEVEL COMPLETED
             if len(self.board_objects) == 0:
                 self.player.level += 1
-                if self.player.level == 3:
-                    printWinner()
-                    return
                 showLevelUp()
                 self.resetLevel()
 

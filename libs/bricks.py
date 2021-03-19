@@ -68,3 +68,9 @@ class RainbowBrick(Bricks):
         else:
             self.fixed = True
             return False
+
+
+class InvisibleBricks(Bricks):
+    def __init__(self, x, y):
+        Bricks.__init__(self, x, y, 10000, False)
+        self.otp = Back.BLACK + " " * BLOCK_WIDTH + Style.RESET_ALL
